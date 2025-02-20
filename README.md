@@ -1,4 +1,4 @@
-# StaySafe - Group_63 (CI6330) 2025
+# StaySafe - Group 63 (CI6330) 2025
 StaySafe is a mobile app designed to enhance personal safety by allowing friends and family to check in on planned walking, jogging, cycling or taxi trips. At a minimum, the app should allow a user to notify friends of their departure location and departure time and their intended destination with an ETA for arrival and enable them to set a status e.g. "on route" or "arrived".
 
 ### Additional features might include (but are not limited to):
