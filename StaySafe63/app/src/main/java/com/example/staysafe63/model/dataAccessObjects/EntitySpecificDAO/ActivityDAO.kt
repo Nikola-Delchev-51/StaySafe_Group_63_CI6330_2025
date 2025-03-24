@@ -1,4 +1,4 @@
-package com.example.staysafe63.model.dataAccessObjects.entitySpecificDAO
+package com.example.staysafe63.model.dataAccessObjects.EntitySpecificDAO
 import androidx.room.Dao
 import androidx.room.Query
 import com.example.staysafe63.model.dataAccessObjects.BaseDAO

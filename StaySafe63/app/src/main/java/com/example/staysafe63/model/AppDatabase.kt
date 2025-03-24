@@ -2,12 +2,12 @@ package com.example.staysafe63.model
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.staysafe63.model.dataAccessObjects.entitySpecificDAO.ActivityDAO
-import com.example.staysafe63.model.dataAccessObjects.entitySpecificDAO.ContactDAO
-import com.example.staysafe63.model.dataAccessObjects.entitySpecificDAO.LocationDAO
-import com.example.staysafe63.model.dataAccessObjects.entitySpecificDAO.PositionDAO
-import com.example.staysafe63.model.dataAccessObjects.entitySpecificDAO.StatusDAO
-import com.example.staysafe63.model.dataAccessObjects.entitySpecificDAO.UserDAO
+import com.example.staysafe63.model.dataAccessObjects.EntitySpecificDAO.ActivityDAO
+import com.example.staysafe63.model.dataAccessObjects.EntitySpecificDAO.ContactDAO
+import com.example.staysafe63.model.dataAccessObjects.EntitySpecificDAO.LocationDAO
+import com.example.staysafe63.model.dataAccessObjects.EntitySpecificDAO.PositionDAO
+import com.example.staysafe63.model.dataAccessObjects.EntitySpecificDAO.StatusDAO
+import com.example.staysafe63.model.dataAccessObjects.EntitySpecificDAO.UserDAO
 import com.example.staysafe63.model.entities.*
 
 @Database(entities = [
