@@ -3,45 +3,27 @@ package com.example.staysafe63
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.staysafe63.ui.theme.StaySafe63Theme
+import com.example.staysafe63.viewmodel.entitySpecificViewmodel.*
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
         setContent {
             StaySafe63Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                Surface(color = MaterialTheme.colorScheme.background) {
+                    val userViewModel: UserViewModel = viewModel()
+                    val contactViewModel: ContactViewModel = viewModel()
+                    val activityViewModel: ActivityViewModel = viewModel()
+                    val locationViewModel: LocationViewModel = viewModel()
+                    val positionViewModel: PositionViewModel = viewModel()
+                    val statusViewModel: StatusViewModel = viewModel()
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    StaySafe63Theme {
-        Greeting("Android")
     }
 }
