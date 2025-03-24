@@ -1,101 +1,87 @@
 package com.example.staysafe63
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.staysafe63.ui.theme.StaySafe63Theme
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.staysafe63.viewmodel.entitySpecificViewmodel.UserViewModel
+import com.example.staysafe63.model.entities.User
+import kotlinx.coroutines.launch
 
-// --- User Data Class ---
-data class User(
-    val userID: String,
-    val userFirstname: String,
-    val userLastname: String,
-    val userPhone: String,
-    val userUsername: String,
-    val userPassword: String,
-    val userLatitude: Double,
-    val userLongitude: Double,
-    val userTimestamp: String
-)
-
-// --- Composable Function ---
 @Composable
-fun UserScreen() {
-    // Input states
+fun UserScreen(userViewModel: UserViewModel = viewModel()) {
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
     var phone by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-    // Dummy user list
     var userList by remember { mutableStateOf(listOf<User>()) }
 
+    val scope = rememberCoroutineScope()
+
+    // Track if editing and which user
+    var editingUser by remember { mutableStateOf<User?>(null) }
+
+    // Load users on screen load
+    LaunchedEffect(Unit) {
+        userList = userViewModel.loadAllItems()
+    }
+
     Column(modifier = Modifier.padding(16.dp)) {
-        // --- Form Inputs ---
-        OutlinedTextField(
-            value = firstName,
-            onValueChange = { firstName = it },
-            label = { Text("First Name") },
-            modifier = Modifier.fillMaxWidth()
-        )
+        // Input Fields
+        OutlinedTextField(value = firstName, onValueChange = { firstName = it }, label = { Text("First Name") }, modifier = Modifier.fillMaxWidth())
         Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = lastName,
-            onValueChange = { lastName = it },
-            label = { Text("Last Name") },
-            modifier = Modifier.fillMaxWidth()
-        )
+        OutlinedTextField(value = lastName, onValueChange = { lastName = it }, label = { Text("Last Name") }, modifier = Modifier.fillMaxWidth())
         Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = phone,
-            onValueChange = { phone = it },
-            label = { Text("Phone") },
-            modifier = Modifier.fillMaxWidth()
-        )
+        OutlinedTextField(value = phone, onValueChange = { phone = it }, label = { Text("Phone") }, modifier = Modifier.fillMaxWidth())
         Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = username,
-            onValueChange = { username = it },
-            label = { Text("Username") },
-            modifier = Modifier.fillMaxWidth()
-        )
+        OutlinedTextField(value = username, onValueChange = { username = it }, label = { Text("Username") }, modifier = Modifier.fillMaxWidth())
         Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Password") },
-            modifier = Modifier.fillMaxWidth()
-        )
+        OutlinedTextField(value = password, onValueChange = { password = it }, label = { Text("Password") }, modifier = Modifier.fillMaxWidth())
         Spacer(modifier = Modifier.height(16.dp))
 
-        // --- Submit Button ---
+        // Submit / Update Button
         Button(onClick = {
-            val newUser = User(
-                userID = System.currentTimeMillis().toString(),
-                userFirstname = firstName,
-                userLastname = lastName,
-                userPhone = phone,
-                userUsername = username,
-                userPassword = password,
-                userLatitude = 0.0,  // Placeholder
-                userLongitude = 0.0,
-                userTimestamp = "2025-03-23T00:00:00Z" // Placeholder
-            )
+            if (editingUser == null) {
+                // ADD USER
+                userViewModel.createUser(
+                    firstname = firstName,
+                    lastname = lastName,
+                    phone = phone,
+                    username = username,
+                    password = password,
+                    latitude = 0.0,
+                    longitude = 0.0,
+                    timestamp = System.currentTimeMillis()
+                )
+            } else {
+                // UPDATE USER
+                val updatedUser = editingUser!!.copy(
+                    UserFirstname = firstName,
+                    UserLastname = lastName,
+                    UserPhone = phone,
+                    UserUsername = username,
+                    UserPassword = password,
+                    UserLatitude = 0.0,
+                    UserLongitude = 0.0,
+                    UserTimestamp = System.currentTimeMillis()
+                )
+                userViewModel.updateItem(editingUser!!, updatedUser)
+                editingUser = null
+            }
 
-            userList = userList + newUser
-
-            // --- Backend Function (commented) ---
-            // createUser(newUser)
+            // Refresh list
+            scope.launch {
+                userList = userViewModel.loadAllItems()
+            }
 
             // Clear form
             firstName = ""
@@ -104,40 +90,43 @@ fun UserScreen() {
             username = ""
             password = ""
         }) {
-            Text("Add User")
+            Text(if (editingUser == null) "Add User" else "Update User")
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // --- User List ---
         Text("Users:", style = MaterialTheme.typography.titleMedium)
         LazyColumn {
             items(userList) { user ->
-                Text("- ${user.userFirstname} ${user.userLastname}", style = MaterialTheme.typography.bodyMedium)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp)
+                        .clickable {
+                            // Fill form for editing
+                            editingUser = user
+                            firstName = user.UserFirstname
+                            lastName = user.UserLastname
+                            phone = user.UserPhone
+                            username = user.UserUsername
+                            password = user.UserPassword
+                        },
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column {
+                        Text("${user.UserFirstname} ${user.UserLastname}", style = MaterialTheme.typography.bodyMedium)
+                        Text("Username: ${user.UserUsername}", style = MaterialTheme.typography.bodySmall)
+                    }
+                    IconButton(onClick = {
+                        userViewModel.deleteItem(user)
+                        scope.launch {
+                            userList = userViewModel.loadAllItems()
+                        }
+                    }) {
+                        Icon(Icons.Default.Delete, contentDescription = "Delete User")
+                    }
+                }
             }
         }
-    }
-}
-
-/*
-// --- Backend Functions (Commented Out) ---
-fun createUser(user: User) {
-    // TODO: Implement API call
-}
-
-fun updateUser(user: User) {
-    // TODO: Implement API call
-}
-
-fun deleteUser(userID: String) {
-    // TODO: Implement API call
-}
-*/
-
-@Preview(showBackground = true)
-@Composable
-fun UserScreenPreview() {
-    StaySafe63Theme {
-        UserScreen()
     }
 }

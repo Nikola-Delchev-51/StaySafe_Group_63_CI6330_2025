@@ -9,7 +9,7 @@ class UserViewModel(application: Application) : BaseViewModel<User>(
     dao = DatabaseInstance.getDatabase(application).userDao(),
     application = application
 ) {
-    override suspend fun loadAllItems(): List<User> {
+    public override suspend fun loadAllItems(): List<User> {
         return DatabaseInstance.getDatabase(getApplication()).userDao().getAllUsers()
     }
 
