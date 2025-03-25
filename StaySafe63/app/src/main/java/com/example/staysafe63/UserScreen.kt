@@ -114,6 +114,10 @@ fun UserScreen(userViewModel: UserViewModel = viewModel(), navController: NavCon
                             "Username: ${user.UserUsername}",
                             style = MaterialTheme.typography.bodySmall
                         )
+                        Text("Phone: ${user.UserPhone}", style = MaterialTheme.typography.bodySmall)
+                    }
+
+
                     }
 
                     Row {
@@ -136,7 +140,6 @@ fun UserScreen(userViewModel: UserViewModel = viewModel(), navController: NavCon
             }
         }
     }
-}
 
 
 
