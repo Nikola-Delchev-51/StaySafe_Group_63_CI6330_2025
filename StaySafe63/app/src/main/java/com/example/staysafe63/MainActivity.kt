@@ -18,10 +18,19 @@ class MainActivity : ComponentActivity() {
             StaySafe63Theme {
                 val navController = rememberNavController()
 
-                NavHost(navController = navController, startDestination = "user_screen") {
+                NavHost(navController = navController, startDestination = "login_screen") {
+
+                    // LOGIN SCREEN
+                    composable("login_screen") {
+                        UserLoginScreen(navController = navController)
+                    }
+
+                    // USER LIST + ADD SCREEN
                     composable("user_screen") {
                         UserScreen(navController = navController)
                     }
+
+                    // EDIT USER SCREEN
                     composable(
                         route = "edit_user_screen/{userId}",
                         arguments = listOf(navArgument("userId") { type = NavType.IntType })
@@ -29,9 +38,14 @@ class MainActivity : ComponentActivity() {
                         val userId = backStackEntry.arguments?.getInt("userId") ?: 0
                         UserEditScreen(userId = userId, navController = navController)
                     }
+
+                    composable("register_screen") {
+                        UserRegistrationScreen(navController = navController)
+                    }
+
+                    // 🔜 Other screens like contact_screen, activity_screen will go here
                 }
             }
         }
     }
 }
-//
