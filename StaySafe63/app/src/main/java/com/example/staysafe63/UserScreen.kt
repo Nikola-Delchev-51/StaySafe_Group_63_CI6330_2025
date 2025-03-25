@@ -27,7 +27,7 @@ fun UserScreen(userViewModel: UserViewModel = viewModel(), navController: NavCon
     var userList by remember { mutableStateOf(listOf<User>()) }
     val scope = rememberCoroutineScope()
 
-    // Load from DB
+    // Load from Db
     LaunchedEffect(Unit) {
         userList = userViewModel.loadAllItems()
     }

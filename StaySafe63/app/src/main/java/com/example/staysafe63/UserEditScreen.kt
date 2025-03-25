@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 fun UserEditScreen(
     userId: Int,
     userViewModel: UserViewModel = viewModel(),
-    navController: NavController? = null 
+    navController: NavController? = null
 ) {
     var user by remember { mutableStateOf<User?>(null) }
 
@@ -69,7 +69,7 @@ fun UserEditScreen(
                 userViewModel.updateUser(user!!, updatedUser)
 
                 scope.launch {
-                    navController?.popBackStack() // Go back if using nav
+                    navController?.popBackStack()
                 }
             }
         }) {
