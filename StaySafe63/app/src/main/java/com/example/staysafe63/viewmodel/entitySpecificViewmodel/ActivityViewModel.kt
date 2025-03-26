@@ -9,7 +9,7 @@ class ActivityViewModel(application: Application) : BaseViewModel<Activity>(
     dao = DatabaseInstance.getDatabase(application).activityDao(),
     application = application
 ) {
-    override suspend fun loadAllItems(): List<Activity> {
+    public override suspend fun loadAllItems(): List<Activity> {
         return DatabaseInstance.getDatabase(getApplication()).activityDao().getAllActivities()
     }
 

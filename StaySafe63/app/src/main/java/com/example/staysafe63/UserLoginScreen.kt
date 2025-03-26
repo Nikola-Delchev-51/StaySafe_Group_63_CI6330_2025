@@ -16,6 +16,7 @@ fun UserLoginScreen(
     navController: NavController,
     userViewModel: UserViewModel = viewModel()
 ) {
+    // State variables
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf<String?>(null) }
@@ -29,10 +30,12 @@ fun UserLoginScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // Title
         Text("Login", style = MaterialTheme.typography.headlineSmall)
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Username input
         OutlinedTextField(
             value = username,
             onValueChange = { username = it },
@@ -42,6 +45,7 @@ fun UserLoginScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        // Password input
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
@@ -51,6 +55,7 @@ fun UserLoginScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Login button
         Button(onClick = {
             scope.launch {
                 val users = userViewModel.loadAllItems()
@@ -59,6 +64,10 @@ fun UserLoginScreen(
                 }
 
                 if (matchedUser != null) {
+                    // Save user session
+                    SessionManager.loggedInUserId = matchedUser.UserID
+                    SessionManager.loggedInUsername = matchedUser.UserUsername
+
                     errorMessage = null
                     navController.navigate("user_screen")
                 } else {
@@ -69,17 +78,20 @@ fun UserLoginScreen(
             Text("Login")
         }
 
-        // 🔗 Navigation to registration screen
+        // Navigate to registration screen
         TextButton(onClick = {
             navController.navigate("register_screen")
         }) {
             Text("Don’t have an account? Register")
         }
 
+        // Display error message if present
         errorMessage?.let {
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = it, color = MaterialTheme.colorScheme.error)
         }
     }
 }
+
+
 

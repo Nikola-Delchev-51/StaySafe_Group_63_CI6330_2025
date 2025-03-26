@@ -1,31 +1,64 @@
 package com.example.staysafe63
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.tooling.preview.Preview
-
-data class Status(
-    val statusID: String,
-    val statusName: String,
-    val statusOrder: Int
-)
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.example.staysafe63.model.entities.Contact
+import com.example.staysafe63.model.entities.Status
+import com.example.staysafe63.viewmodel.entitySpecificViewmodel.ContactViewModel
+import com.example.staysafe63.viewmodel.entitySpecificViewmodel.StatusViewModel
+import kotlinx.coroutines.launch
 
 @Composable
-fun StatusScreen() {
-    var statusName by remember { mutableStateOf("") }
-    var statusOrder by remember { mutableStateOf("") }
+fun StatusScreen(
+    navController: NavController,
+    statusViewModel: StatusViewModel = viewModel(),
+    contactViewModel: ContactViewModel = viewModel()
+) {
+    // Context and session
+    val context = LocalContext.current
+    val userId = SessionManager.loggedInUserId ?: return
+    val username = SessionManager.loggedInUsername ?: "Unknown"
 
-    val statusList = remember { mutableStateListOf<Status>() }
+    // State variables
+    var statusName by remember { mutableStateOf("") }
+    var statusList by remember { mutableStateOf(listOf<Status>()) }
+    var contactList by remember { mutableStateOf(listOf<Contact>()) }
+
+    val scope = rememberCoroutineScope()
+
+    // Load data
+    LaunchedEffect(Unit) {
+        statusList = statusViewModel.loadAllItems()
+        contactList = contactViewModel.loadAllItems()
+        println("✅ Logged-in user: $username (ID: $userId)")
+        println("✅ Contacts loaded: ${contactList.size}")
+    }
 
     Column(modifier = Modifier.padding(16.dp)) {
-        Text("Add New Status", style = MaterialTheme.typography.headlineSmall)
-        Spacer(modifier = Modifier.height(8.dp))
 
+        // Title
+        Text("Manage Statuses", style = MaterialTheme.typography.headlineSmall)
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Back navigation
+        TextButton(onClick = {
+            navController.popBackStack()
+        }) {
+            Text("⬅ Back", style = MaterialTheme.typography.bodyLarge)
+        }
+
+        // Status input field
         OutlinedTextField(
             value = statusName,
             onValueChange = { statusName = it },
@@ -33,47 +66,75 @@ fun StatusScreen() {
             modifier = Modifier.fillMaxWidth()
         )
 
-        OutlinedTextField(
-            value = statusOrder,
-            onValueChange = { statusOrder = it },
-            label = { Text("Status Order (e.g., 1, 2, 3)") },
-            modifier = Modifier.fillMaxWidth()
-        )
+        Spacer(modifier = Modifier.height(16.dp))
 
-        Spacer(modifier = Modifier.height(12.dp))
+        // Add status button
+        Button(
+            onClick = {
+                statusViewModel.createStatus(
+                    name = statusName,
+                    order = 0
+                )
 
-        Button(onClick = {
-            val newStatus = Status(
-                statusID = System.currentTimeMillis().toString(),
-                statusName = statusName,
-                statusOrder = statusOrder.toIntOrNull() ?: 0
-            )
+                // Notify contacts
+                val userContacts = contactList.filter { it.ContactUserID == userId }
 
-            statusList.add(newStatus)
+                if (userContacts.isEmpty()) {
+                    Toast.makeText(
+                        context,
+                        "⚠️ No emergency contacts to notify.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    userContacts.forEach { contact ->
+                        Toast.makeText(
+                            context,
+                            "📢 Notified ${contact.ContactLabel}: $username updated status to '$statusName'",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
 
-            // Placeholder backend call - to be connected later
-            // createStatus(newStatus)
+                // Refresh lists
+                scope.launch {
+                    statusList = statusViewModel.loadAllItems()
+                    contactList = contactViewModel.loadAllItems()
+                }
 
-            statusName = ""
-            statusOrder = ""
-        }) {
+                // Reset input
+                statusName = ""
+            },
+            enabled = statusName.isNotBlank()
+        ) {
             Text("Add Status")
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-        Text("Status List", style = MaterialTheme.typography.headlineSmall)
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Existing status list
+        Text("Existing Statuses", style = MaterialTheme.typography.titleMedium)
 
         LazyColumn {
             items(statusList) { status ->
-                Text("${status.statusOrder}: ${status.statusName}")
-                HorizontalDivider()
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(text = status.StatusName, style = MaterialTheme.typography.bodyLarge)
+
+                    // Delete button
+                    IconButton(onClick = {
+                        statusViewModel.deleteItem(status)
+                        scope.launch {
+                            statusList = statusViewModel.loadAllItems()
+                        }
+                    }) {
+                        Icon(Icons.Default.Delete, contentDescription = "Delete Status")
+                    }
+                }
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun StatusScreenPreview() {
-    StatusScreen()
 }
