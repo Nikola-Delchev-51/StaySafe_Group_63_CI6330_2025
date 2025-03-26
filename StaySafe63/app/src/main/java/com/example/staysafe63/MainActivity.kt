@@ -43,7 +43,11 @@ class MainActivity : ComponentActivity() {
                         UserRegistrationScreen(navController = navController)
                     }
 
-                    // 🔜 Other screens like contact_screen, activity_screen will go here
+                    composable("contact_screen") {
+                        ContactScreen(navController = navController)
+                    }
+
+                    // Other screens like contact_screen, activity_screen will go here
                 }
             }
         }
