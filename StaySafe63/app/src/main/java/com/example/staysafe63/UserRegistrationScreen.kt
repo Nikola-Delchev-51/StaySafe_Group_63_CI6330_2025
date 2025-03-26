@@ -14,6 +14,7 @@ fun UserRegistrationScreen(
     navController: NavController? = null,
     userViewModel: UserViewModel = viewModel()
 ) {
+    // Form field state
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
     var phone by remember { mutableStateOf("") }
@@ -25,10 +26,12 @@ fun UserRegistrationScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
+        // Title
         Text("Register New User", style = MaterialTheme.typography.headlineSmall)
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // First name input
         OutlinedTextField(
             value = firstName,
             onValueChange = { firstName = it },
@@ -38,6 +41,7 @@ fun UserRegistrationScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        // Last name input
         OutlinedTextField(
             value = lastName,
             onValueChange = { lastName = it },
@@ -47,6 +51,7 @@ fun UserRegistrationScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        // Phone input
         OutlinedTextField(
             value = phone,
             onValueChange = { phone = it },
@@ -56,6 +61,7 @@ fun UserRegistrationScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        // Username input
         OutlinedTextField(
             value = username,
             onValueChange = { username = it },
@@ -65,6 +71,7 @@ fun UserRegistrationScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        // Password input
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
@@ -74,6 +81,7 @@ fun UserRegistrationScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Register button
         Button(onClick = {
             userViewModel.createUser(
                 firstname = firstName,
@@ -93,10 +101,11 @@ fun UserRegistrationScreen(
             username = ""
             password = ""
 
-            // 👇 Navigate back to login screen
+            // Navigate back to login screen
             navController?.popBackStack()
         }) {
             Text("Register")
         }
     }
 }
+

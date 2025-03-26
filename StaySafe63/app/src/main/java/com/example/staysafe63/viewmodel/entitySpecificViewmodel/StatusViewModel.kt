@@ -9,7 +9,7 @@ class StatusViewModel(application: Application) : BaseViewModel<Status>(
     dao = DatabaseInstance.getDatabase(application).statusDao(),
     application = application
 ) {
-    override suspend fun loadAllItems(): List<Status> {
+    public override suspend fun loadAllItems(): List<Status> {
         return DatabaseInstance.getDatabase(getApplication()).statusDao().getAllStatuses()
     }
 
@@ -25,7 +25,5 @@ class StatusViewModel(application: Application) : BaseViewModel<Status>(
         )
     }
 
-    fun updateStatus(original: Status, updated: Status) {
-        updateItem(original, updated)
-    }
+
 }

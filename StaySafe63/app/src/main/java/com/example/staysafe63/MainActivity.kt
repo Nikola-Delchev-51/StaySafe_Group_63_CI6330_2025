@@ -20,17 +20,17 @@ class MainActivity : ComponentActivity() {
 
                 NavHost(navController = navController, startDestination = "login_screen") {
 
-                    // LOGIN SCREEN
+
                     composable("login_screen") {
                         UserLoginScreen(navController = navController)
                     }
 
-                    // USER LIST + ADD SCREEN
+
                     composable("user_screen") {
                         UserScreen(navController = navController)
                     }
 
-                    // EDIT USER SCREEN
+
                     composable(
                         route = "edit_user_screen/{userId}",
                         arguments = listOf(navArgument("userId") { type = NavType.IntType })
@@ -46,8 +46,15 @@ class MainActivity : ComponentActivity() {
                     composable("contact_screen") {
                         ContactScreen(navController = navController)
                     }
+                    composable("activity_screen") {
+                        ActivityScreen(navController = navController)
+                    }
 
-                    // Other screens like contact_screen, activity_screen will go here
+                    composable("status_screen") {
+                        StatusScreen(navController = navController)
+                    }
+
+
                 }
             }
         }
