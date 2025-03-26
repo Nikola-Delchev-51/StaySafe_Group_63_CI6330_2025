@@ -116,7 +116,13 @@ fun UserScreen(userViewModel: UserViewModel = viewModel(), navController: NavCon
                         )
                         Text("Phone: ${user.UserPhone}", style = MaterialTheme.typography.bodySmall)
                     }
+                    Spacer(modifier = Modifier.height(16.dp))
 
+                    Button(onClick = {
+                        navController.navigate("contact_screen")
+                    }) {
+                        Text("Manage Contacts")
+                    }
 
                     }
 
@@ -140,6 +146,7 @@ fun UserScreen(userViewModel: UserViewModel = viewModel(), navController: NavCon
             }
         }
     }
+
 
 
 

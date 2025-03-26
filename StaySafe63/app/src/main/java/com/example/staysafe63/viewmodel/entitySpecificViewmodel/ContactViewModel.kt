@@ -9,7 +9,7 @@ class ContactViewModel(application: Application) : BaseViewModel<Contact>(
     dao = DatabaseInstance.getDatabase(application).contactDao(),
     application = application
 ) {
-    override suspend fun loadAllItems(): List<Contact> {
+    public override suspend fun loadAllItems(): List<Contact> {
         return DatabaseInstance.getDatabase(getApplication()).contactDao().getAllContacts()
     }
 
