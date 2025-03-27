@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.example.staysafe63.ui.NavigationComponent
 import com.example.staysafe63.ui.theme.StaySafe63Theme
 
 class MainActivity : ComponentActivity() {

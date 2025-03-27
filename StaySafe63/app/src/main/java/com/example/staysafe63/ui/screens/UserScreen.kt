@@ -1,4 +1,4 @@
-package com.example.staysafe63
+package com.example.staysafe63.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -11,6 +11,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.staysafe63.model.entities.User
+import com.example.staysafe63.ui.AppScaffold
+import com.example.staysafe63.ui.SessionManager
 import com.example.staysafe63.viewmodel.entitySpecificViewmodel.UserViewModel
 
 

@@ -1,9 +1,16 @@
-package com.example.staysafe63
+package com.example.staysafe63.ui
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import androidx.navigation.navArgument
+import com.example.staysafe63.ui.screens.ActivityScreen
+import com.example.staysafe63.ui.screens.ContactScreen
+import com.example.staysafe63.ui.screens.StatusScreen
+import com.example.staysafe63.ui.screens.UserEditScreen
+import com.example.staysafe63.ui.screens.UserLoginScreen
+import com.example.staysafe63.ui.screens.UserRegistrationScreen
+import com.example.staysafe63.ui.screens.UserScreen
 
 
 /*

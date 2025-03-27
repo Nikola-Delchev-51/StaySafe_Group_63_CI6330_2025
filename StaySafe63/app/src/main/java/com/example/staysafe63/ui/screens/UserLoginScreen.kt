@@ -1,4 +1,4 @@
-package com.example.staysafe63
+package com.example.staysafe63.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -12,6 +12,7 @@ import com.example.staysafe63.viewmodel.entitySpecificViewmodel.UserViewModel
 import kotlinx.coroutines.launch
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import com.example.staysafe63.ui.SessionManager
 
 /*
 * @author K2128078

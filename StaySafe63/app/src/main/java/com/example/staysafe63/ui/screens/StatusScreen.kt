@@ -1,4 +1,4 @@
-package com.example.staysafe63
+package com.example.staysafe63.ui.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
@@ -15,6 +15,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.staysafe63.model.entities.Contact
 import com.example.staysafe63.model.entities.Status
+import com.example.staysafe63.ui.AppScaffold
+import com.example.staysafe63.ui.SessionManager
 import com.example.staysafe63.viewmodel.entitySpecificViewmodel.ContactViewModel
 import com.example.staysafe63.viewmodel.entitySpecificViewmodel.StatusViewModel
 import kotlinx.coroutines.launch
