@@ -2,7 +2,7 @@ package com.example.staysafe63.model.dataAccessObjects
 
 import androidx.room.*
 
-/*
+/**
 * @author K2336620
 *
 * Base Data access object interface providing common database operations.

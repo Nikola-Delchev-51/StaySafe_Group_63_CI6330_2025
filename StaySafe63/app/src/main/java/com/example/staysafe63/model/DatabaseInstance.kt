@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.room.Room
 
-/*
+/**
 * @author K2336620
 *
 * Singleton object that provides a single instance of the AppDatabase.

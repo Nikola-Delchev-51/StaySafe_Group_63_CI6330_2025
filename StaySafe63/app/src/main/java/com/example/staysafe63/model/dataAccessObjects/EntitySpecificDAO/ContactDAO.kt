@@ -4,7 +4,7 @@ import androidx.room.*
 import com.example.staysafe63.model.dataAccessObjects.BaseDAO
 import com.example.staysafe63.model.entities.Contact
 
-/*
+/**
 * @author K2336620
 *
 * Data access object interface for the Contact entity.

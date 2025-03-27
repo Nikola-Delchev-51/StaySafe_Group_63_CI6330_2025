@@ -26,7 +26,7 @@ import com.example.staysafe63.viewmodel.entitySpecificViewmodel.StatusViewModel
 import kotlinx.coroutines.launch
 
 
-/*
+/**
 * @author K2128078
 *
 * */

@@ -15,7 +15,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import com.example.staysafe63.ui.SessionManager
 
-/*
+/**
 * @author K2128078
 *
 * */

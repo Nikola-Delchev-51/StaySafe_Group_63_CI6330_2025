@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
-/*
+/**
 * @author K2336620
 *
 * Class that represents a User object for the staysafe63-database.
@@ -30,5 +30,5 @@ data class User(
     val UserLongitude: Double,
 
     val UserTimestamp: Long
-    
+
 )

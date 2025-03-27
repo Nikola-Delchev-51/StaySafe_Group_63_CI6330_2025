@@ -22,7 +22,7 @@ import com.example.staysafe63.viewmodel.entitySpecificViewmodel.UserViewModel
 import kotlinx.coroutines.launch
 
 
-/*
+/**
 * @author K2128078
 *
 * */

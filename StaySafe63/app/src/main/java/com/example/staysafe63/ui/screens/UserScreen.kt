@@ -16,7 +16,7 @@ import com.example.staysafe63.ui.SessionManager
 import com.example.staysafe63.viewmodel.entitySpecificViewmodel.UserViewModel
 
 
-/*
+/**
 * @author K2128078
 *
 * */

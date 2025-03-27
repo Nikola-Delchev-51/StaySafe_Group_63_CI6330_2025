@@ -13,7 +13,7 @@ import com.example.staysafe63.ui.screens.UserRegistrationScreen
 import com.example.staysafe63.ui.screens.UserScreen
 
 
-/*
+/**
 * @author K2128078
 *
 * */

@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
-/*
+/**
 * @author K2336620
 *
 * Class that represents a Position object for the staysafe63-database.

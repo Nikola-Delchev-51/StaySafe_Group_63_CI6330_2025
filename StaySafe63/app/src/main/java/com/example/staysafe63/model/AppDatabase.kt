@@ -5,7 +5,7 @@ import com.example.staysafe63.model.dataAccessObjects.EntitySpecificDAO.*
 import com.example.staysafe63.model.entities.*
 
 
-/*
+/**
 * @author K2336620
 *
 * Main database class of the application.
