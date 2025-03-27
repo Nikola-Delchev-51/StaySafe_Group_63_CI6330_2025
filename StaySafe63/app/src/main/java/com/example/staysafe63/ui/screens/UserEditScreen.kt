@@ -1,9 +1,12 @@
 package com.example.staysafe63.ui.screens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -79,7 +82,8 @@ fun UserEditScreen(
                 value = phone,
                 onValueChange = { phone = it },
                 label = { Text("Phone") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Phone)
             )
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -95,7 +99,9 @@ fun UserEditScreen(
                 value = password,
                 onValueChange = { password = it },
                 label = { Text("Password") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password)
             )
 
             Spacer(modifier = Modifier.height(16.dp))

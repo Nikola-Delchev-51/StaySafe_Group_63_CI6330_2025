@@ -1,6 +1,7 @@
 package com.example.staysafe63.ui.screens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -11,7 +12,7 @@ import com.example.staysafe63.viewmodel.entitySpecificViewmodel.UserViewModel
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.*
 
 
 /**
@@ -54,7 +55,7 @@ fun UserRegistrationScreen(
             value = firstName,
             onValueChange = { firstName = it },
             label = { Text("First Name") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -72,9 +73,14 @@ fun UserRegistrationScreen(
         // Phone input
         OutlinedTextField(
             value = phone,
-            onValueChange = { phone = it },
+            onValueChange = { input ->
+                // Remove whitespace characters from the input
+                val filteredInput = input.filterNot { it.isWhitespace() }
+                if (filteredInput == input) {
+                    phone = input} },
             label = { Text("Phone") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Phone)
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -82,7 +88,11 @@ fun UserRegistrationScreen(
         // Username input
         OutlinedTextField(
             value = username,
-            onValueChange = { username = it },
+            onValueChange = { input ->
+                // Remove whitespace characters from the input
+                val filteredInput = input.filterNot { it.isWhitespace() }
+                if (filteredInput == input) {
+                    username = input} },
             label = { Text("Username") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -92,10 +102,15 @@ fun UserRegistrationScreen(
         // Password input
         OutlinedTextField(
             value = password,
-            onValueChange = { password = it },
+            onValueChange = { input ->
+                // Remove whitespace characters from the input
+                val filteredInput = input.filterNot { it.isWhitespace() }
+                if (filteredInput == input) {
+                    password = input} },
             label = { Text("Password") },
             modifier = Modifier.fillMaxWidth(),
-            visualTransformation = PasswordVisualTransformation()
+            visualTransformation = PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
