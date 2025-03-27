@@ -104,7 +104,7 @@ fun UserRegistrationScreen(
                 firstname = firstName,
                 lastname = lastName,
                 phone = phone,
-                username = username,
+                username = username.lowercase(),
                 password = password,
                 latitude = 0.0,
                 longitude = 0.0,

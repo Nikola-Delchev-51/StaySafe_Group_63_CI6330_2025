@@ -80,7 +80,7 @@ fun UserLoginScreen(
             scope.launch {
                 val users = userViewModel.loadAllItems()
                 val matchedUser = users.find {
-                    it.UserUsername == username && it.UserPassword == password
+                    it.UserUsername == username.lowercase() && it.UserPassword == password
                 }
 
                 if (matchedUser != null) {
