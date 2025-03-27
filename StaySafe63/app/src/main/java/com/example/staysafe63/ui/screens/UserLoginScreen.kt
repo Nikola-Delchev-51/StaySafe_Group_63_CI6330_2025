@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import com.example.staysafe63.viewmodel.entitySpecificViewmodel.UserViewModel
 import kotlinx.coroutines.launch
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import com.example.staysafe63.ui.SessionManager
 
@@ -70,7 +71,8 @@ fun UserLoginScreen(
             value = password,
             onValueChange = { password = it },
             label = { Text("Password") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            visualTransformation = PasswordVisualTransformation()
         )
 
         Spacer(modifier = Modifier.height(16.dp))
