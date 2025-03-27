@@ -49,119 +49,120 @@ fun ContactScreen(
         println("✅ Logged-in user: $username (ID: $userId)")
     }
 
-    Column(modifier = Modifier.padding(16.dp)) {
+    AppScaffold(
+        screenTitle = "Add Emergency Contact",
+        navController = navController!!
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
 
-        // Screen title
-        Text("Add Emergency Contact", style = MaterialTheme.typography.headlineSmall)
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Back navigation
-        TextButton(onClick = { navController?.popBackStack() }) {
-            Text("⬅ Back", style = MaterialTheme.typography.bodyLarge)
-        }
-
-        // Dropdown for selecting user
-        Text("Select User to Add:")
-        DropdownMenuWithUsers(userList, selectedUserId) { selectedUserId = it }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Label input
-        OutlinedTextField(
-            value = label,
-            onValueChange = { label = it },
-            label = { Text("Label (e.g. Mum, Friend)") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Add/Update button
-        Button(
-            enabled = selectedUserId != null && label.isNotBlank(),
-            onClick = {
-                if (editingContact == null) {
-                    // Add new contact
-                    val newContact = Contact(
-                        ContactUserID = userId,
-                        ContactContactID = selectedUserId!!,
-                        ContactLabel = label,
-                        ContactDateCreated = System.currentTimeMillis()
-                    )
-                    contactViewModel.createItem(newContact)
-                } else {
-                    // Update contact
-                    val updated = editingContact!!.copy(
-                        ContactContactID = selectedUserId!!,
-                        ContactLabel = label
-                    )
-                    contactViewModel.updateContact(editingContact!!, updated)
-                }
-
-                // Reload list
-                scope.launch {
-                    contactList = contactViewModel.loadAllItems()
-                }
-
-                // Reset form
-                label = ""
-                selectedUserId = null
-                editingContact = null
+            // Back navigation
+            TextButton(onClick = { navController.popBackStack() }) {
+                Text("⬅ Back", style = MaterialTheme.typography.bodyLarge)
             }
-        ) {
-            Text(if (editingContact == null) "Add Contact" else "Update Contact")
-        }
 
-        // Cancel edit button
-        if (editingContact != null) {
-            TextButton(onClick = {
-                editingContact = null
-                label = ""
-                selectedUserId = null
-            }) {
-                Text("Cancel")
-            }
-        }
+            // Dropdown for selecting user
+            Text("Select User to Add:")
+            DropdownMenuWithUsers(userList, selectedUserId) { selectedUserId = it }
 
-        Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-        // Contact list
-        Text("Your Contacts", style = MaterialTheme.typography.titleMedium)
+            // Label input
+            OutlinedTextField(
+                value = label,
+                onValueChange = { label = it },
+                label = { Text("Label (e.g. Mum, Friend)") },
+                modifier = Modifier.fillMaxWidth()
+            )
 
-        LazyColumn {
-            items(contactList.filter { it.ContactUserID == userId }) { contact ->
-                val contactUser = userList.find { it.UserID == contact.ContactContactID }
+            Spacer(modifier = Modifier.height(16.dp))
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Column {
-                        Text("Name: ${contactUser?.UserFirstname} ${contactUser?.UserLastname}")
-                        Text("Phone: ${contactUser?.UserPhone}")
-                        Text("Label: ${contact.ContactLabel}")
+            // Add/Update button
+            Button(
+                enabled = selectedUserId != null && label.isNotBlank(),
+                onClick = {
+                    if (editingContact == null) {
+                        // Add new contact
+                        val newContact = Contact(
+                            ContactUserID = userId,
+                            ContactContactID = selectedUserId!!,
+                            ContactLabel = label,
+                            ContactDateCreated = System.currentTimeMillis()
+                        )
+                        contactViewModel.createItem(newContact)
+                    } else {
+                        // Update contact
+                        val updated = editingContact!!.copy(
+                            ContactContactID = selectedUserId!!,
+                            ContactLabel = label
+                        )
+                        contactViewModel.updateContact(editingContact!!, updated)
                     }
 
-                    Row {
-                        // Edit button
-                        IconButton(onClick = {
-                            editingContact = contact
-                            label = contact.ContactLabel
-                            selectedUserId = contact.ContactContactID
-                        }) {
-                            Icon(Icons.Default.Edit, contentDescription = "Edit Contact")
+                    // Reload list
+                    scope.launch {
+                        contactList = contactViewModel.loadAllItems()
+                    }
+
+                    // Reset form
+                    label = ""
+                    selectedUserId = null
+                    editingContact = null
+                }
+            ) {
+                Text(if (editingContact == null) "Add Contact" else "Update Contact")
+            }
+
+            // Cancel edit button
+            if (editingContact != null) {
+                TextButton(onClick = {
+                    editingContact = null
+                    label = ""
+                    selectedUserId = null
+                }) {
+                    Text("Cancel")
+                }
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Contact list
+            Text("Your Contacts", style = MaterialTheme.typography.titleMedium)
+
+            LazyColumn {
+                items(contactList.filter { it.ContactUserID == userId }) { contact ->
+                    val contactUser = userList.find { it.UserID == contact.ContactContactID }
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Column {
+                            Text("Name: ${contactUser?.UserFirstname} ${contactUser?.UserLastname}")
+                            Text("Phone: ${contactUser?.UserPhone}")
+                            Text("Label: ${contact.ContactLabel}")
                         }
 
-                        // Delete button
-                        IconButton(onClick = {
-                            contactViewModel.deleteItem(contact)
-                            scope.launch {
-                                contactList = contactViewModel.loadAllItems()
+                        Row {
+                            // Edit button
+                            IconButton(onClick = {
+                                editingContact = contact
+                                label = contact.ContactLabel
+                                selectedUserId = contact.ContactContactID
+                            }) {
+                                Icon(Icons.Default.Edit, contentDescription = "Edit Contact")
                             }
-                        }) {
-                            Icon(Icons.Default.Delete, contentDescription = "Delete Contact")
+
+                            // Delete button
+                            IconButton(onClick = {
+                                contactViewModel.deleteItem(contact)
+                                scope.launch {
+                                    contactList = contactViewModel.loadAllItems()
+                                }
+                            }) {
+                                Icon(Icons.Default.Delete, contentDescription = "Delete Contact")
+                            }
                         }
                     }
                 }
@@ -169,6 +170,7 @@ fun ContactScreen(
         }
     }
 }
+
 
 // Dropdown for selecting users
 @Composable
