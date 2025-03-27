@@ -10,6 +10,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.staysafe63.viewmodel.entitySpecificViewmodel.UserViewModel
 import kotlinx.coroutines.launch
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+
 
 @Composable
 fun UserLoginScreen(
@@ -30,10 +33,23 @@ fun UserLoginScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Title
-        Text("Login", style = MaterialTheme.typography.headlineSmall)
+        // App Title
+        Text(
+            text = "StaySafe",
+            style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 32.dp),
+            textAlign = TextAlign.Center
+        )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        // Login Section Title
+        Text(
+            text = "Login",
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
 
         // Username input
         OutlinedTextField(

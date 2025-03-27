@@ -18,121 +18,127 @@ fun UserScreen(
     userViewModel: UserViewModel = viewModel(),
     navController: NavController
 ) {
-    val userId = SessionManager.loggedInUserId ?: return
-    val username = SessionManager.loggedInUsername ?: "Unknown"
+    AppScaffold(
+        screenTitle = "User Profile",
+        navController = navController
+    ) {
+        val userId = SessionManager.loggedInUserId ?: return@AppScaffold
+        val username = SessionManager.loggedInUsername ?: "Unknown"
 
-    var userList by remember { mutableStateOf(listOf<User>()) }
-    var showDeleteConfirm by remember { mutableStateOf(false) }
+        var userList by remember { mutableStateOf(listOf<User>()) }
+        var showDeleteConfirm by remember { mutableStateOf(false) }
 
-    // Load users
-    LaunchedEffect(Unit) {
-        userList = userViewModel.loadAllItems()
-    }
+        // Load users
+        LaunchedEffect(Unit) {
+            userList = userViewModel.loadAllItems()
+        }
 
-    val currentUser = userList.find { it.UserID == userId }
+        val currentUser = userList.find { it.UserID == userId }
 
-    currentUser?.let { user ->
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text("Welcome, $username", style = MaterialTheme.typography.headlineSmall)
-            Spacer(modifier = Modifier.height(24.dp))
+        currentUser?.let { user ->
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text("Welcome, $username", style = MaterialTheme.typography.headlineSmall)
+                Spacer(modifier = Modifier.height(24.dp))
 
-            Column(modifier = Modifier.fillMaxWidth()) {
-                Text("Name: ${user.UserFirstname} ${user.UserLastname}")
-                Text("Phone: ${user.UserPhone}")
-                Text("Username: ${user.UserUsername}")
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Button(onClick = {
-                    navController.navigate("contact_screen")
-                }) {
-                    Text("Manage Contacts")
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    Text("Name: ${user.UserFirstname} ${user.UserLastname}")
+                    Text("Phone: ${user.UserPhone}")
+                    Text("Username: ${user.UserUsername}")
                 }
 
-                Button(onClick = {
-                    navController.navigate("activity_screen")
-                }) {
-                    Text("Plan Activity")
-                }
-            }
+                Spacer(modifier = Modifier.height(24.dp))
 
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                IconButton(onClick = {
-                    navController.navigate("edit_user_screen/${user.UserID}")
-                }) {
-                    Icon(Icons.Default.Edit, contentDescription = "Edit User")
-                }
-
-                IconButton(onClick = {
-                    showDeleteConfirm = true
-                }) {
-                    Icon(Icons.Default.Delete, contentDescription = "Delete User")
-                }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Logout Button
-            Button(
-                onClick = {
-                    SessionManager.loggedInUserId = null
-                    SessionManager.loggedInUsername = null
-                    navController.navigate("login_screen") {
-                        popUpTo("user_screen") { inclusive = true }
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Button(onClick = {
+                        navController.navigate("contact_screen")
+                    }) {
+                        Text("Manage Contacts")
                     }
-                },
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-            ) {
-                Text("Logout", color = MaterialTheme.colorScheme.onError)
-            }
 
-            Spacer(modifier = Modifier.height(16.dp))
+                    Button(onClick = {
+                        navController.navigate("activity_screen")
+                    }) {
+                        Text("Plan Activity")
+                    }
+                }
 
-            Button(
-                onClick = { showDeleteConfirm = true },
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-            ) {
-                Text("Delete Profile", color = MaterialTheme.colorScheme.onError)
-            }
+                Spacer(modifier = Modifier.height(24.dp))
 
-            // Delete Confirm Dialog
-            if (showDeleteConfirm) {
-                AlertDialog(
-                    onDismissRequest = { showDeleteConfirm = false },
-                    title = { Text("Delete Account") },
-                    text = { Text("Are you sure you want to delete your profile? This cannot be undone.") },
-                    confirmButton = {
-                        TextButton(onClick = {
-                            userViewModel.deleteItem(user)
-                            SessionManager.loggedInUserId = null
-                            SessionManager.loggedInUsername = null
-                            navController.navigate("login_screen") {
-                                popUpTo("user_screen") { inclusive = true }
-                            }
-                        }) {
-                            Text("Delete", color = MaterialTheme.colorScheme.error)
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    IconButton(onClick = {
+                        navController.navigate("edit_user_screen/${user.UserID}")
+                    }) {
+                        Icon(Icons.Default.Edit, contentDescription = "Edit User")
+                    }
+
+                    IconButton(onClick = {
+                        showDeleteConfirm = true
+                    }) {
+                        Icon(Icons.Default.Delete, contentDescription = "Delete User")
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                // Logout Button
+                Button(
+                    onClick = {
+                        SessionManager.loggedInUserId = null
+                        SessionManager.loggedInUsername = null
+                        navController.navigate("login_screen") {
+                            popUpTo("user_screen") { inclusive = true }
                         }
                     },
-                    dismissButton = {
-                        TextButton(onClick = { showDeleteConfirm = false }) {
-                            Text("Cancel")
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                ) {
+                    Text("Logout", color = MaterialTheme.colorScheme.onError)
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = { showDeleteConfirm = true },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                ) {
+                    Text("Delete Profile", color = MaterialTheme.colorScheme.onError)
+                }
+
+                // Delete Confirm Dialog
+                if (showDeleteConfirm) {
+                    AlertDialog(
+                        onDismissRequest = { showDeleteConfirm = false },
+                        title = { Text("Delete Account") },
+                        text = { Text("Are you sure you want to delete your profile? This cannot be undone.") },
+                        confirmButton = {
+                            TextButton(onClick = {
+                                userViewModel.deleteItem(user)
+                                SessionManager.loggedInUserId = null
+                                SessionManager.loggedInUsername = null
+                                navController.navigate("login_screen") {
+                                    popUpTo("user_screen") { inclusive = true }
+                                }
+                            }) {
+                                Text("Delete", color = MaterialTheme.colorScheme.error)
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = { showDeleteConfirm = false }) {
+                                Text("Cancel")
+                            }
                         }
-                    }
-                )
+                    )
+                }
             }
+        } ?: run {
+            Text("⚠️ Unable to load your profile.")
         }
-    } ?: run {
-        Text("⚠️ Unable to load your profile.")
     }
 }
+
 
 
 

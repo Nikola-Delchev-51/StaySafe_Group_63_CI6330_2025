@@ -8,6 +8,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.staysafe63.viewmodel.entitySpecificViewmodel.UserViewModel
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.Alignment
 
 @Composable
 fun UserRegistrationScreen(
@@ -24,10 +27,19 @@ fun UserRegistrationScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Title
-        Text("Register New User", style = MaterialTheme.typography.headlineSmall)
+        Text(
+            text = "Register New User",
+            style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 32.dp),
+            textAlign = TextAlign.Center
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
