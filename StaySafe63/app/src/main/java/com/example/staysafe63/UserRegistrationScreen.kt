@@ -12,6 +12,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.Alignment
 
+
+/*
+* @author K2128078
+*
+* */
 @Composable
 fun UserRegistrationScreen(
     navController: NavController? = null,

@@ -1,15 +1,15 @@
 package com.example.staysafe63.model
 
-import androidx.room.Database
-import androidx.room.RoomDatabase
-import com.example.staysafe63.model.dataAccessObjects.EntitySpecificDAO.ActivityDAO
-import com.example.staysafe63.model.dataAccessObjects.EntitySpecificDAO.ContactDAO
-import com.example.staysafe63.model.dataAccessObjects.EntitySpecificDAO.LocationDAO
-import com.example.staysafe63.model.dataAccessObjects.EntitySpecificDAO.PositionDAO
-import com.example.staysafe63.model.dataAccessObjects.EntitySpecificDAO.StatusDAO
-import com.example.staysafe63.model.dataAccessObjects.EntitySpecificDAO.UserDAO
+import androidx.room.*
+import com.example.staysafe63.model.dataAccessObjects.EntitySpecificDAO.*
 import com.example.staysafe63.model.entities.*
 
+
+/*
+* @author K2336620
+*
+* Main database class of the application.
+* */
 @Database(entities = [
     User::class,
     Contact::class,
@@ -17,8 +17,7 @@ import com.example.staysafe63.model.entities.*
     Location::class,
     Status::class,
     Position::class
-    ]
-    , version = 2)
+    ], version = 2)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDAO

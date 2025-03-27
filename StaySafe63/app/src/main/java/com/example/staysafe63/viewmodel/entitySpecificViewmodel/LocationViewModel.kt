@@ -9,6 +9,14 @@ import com.example.staysafe63.model.entities.Location
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+
+/*
+* @author K2336620
+*
+* ViewModel for managing Location entities.
+* This class extends BaseViewModel to inherit common CRUD operations
+* and specifies the entity type.
+* */
 class LocationViewModel(application: Application) : AndroidViewModel(application) {
 
     private val db = DatabaseInstance.getDatabase(application)

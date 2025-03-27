@@ -5,6 +5,14 @@ import com.example.staysafe63.model.DatabaseInstance
 import com.example.staysafe63.model.entities.Contact
 import com.example.staysafe63.viewmodel.BaseViewModel
 
+
+/*
+* @author K2336620
+*
+* ViewModel for managing Contact entities.
+* This class extends BaseViewModel to inherit common CRUD operations
+* and specifies the entity type.
+* */
 class ContactViewModel(application: Application) : BaseViewModel<Contact>(
     dao = DatabaseInstance.getDatabase(application).contactDao(),
     application = application

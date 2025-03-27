@@ -19,6 +19,11 @@ import com.example.staysafe63.viewmodel.entitySpecificViewmodel.ContactViewModel
 import com.example.staysafe63.viewmodel.entitySpecificViewmodel.UserViewModel
 import kotlinx.coroutines.launch
 
+
+/*
+* @author K2128078
+*
+* */
 @Composable
 fun ContactScreen(
     navController: NavController? = null,
@@ -172,7 +177,11 @@ fun ContactScreen(
 }
 
 
-// Dropdown for selecting users
+/*
+* @author K2128078
+*
+* Dropdown for selecting users
+* */
 @Composable
 fun DropdownMenuWithUsers(
     userList: List<User>,

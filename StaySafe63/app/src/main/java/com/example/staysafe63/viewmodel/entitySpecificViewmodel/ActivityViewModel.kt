@@ -5,6 +5,14 @@ import com.example.staysafe63.model.DatabaseInstance
 import com.example.staysafe63.model.entities.Activity
 import com.example.staysafe63.viewmodel.BaseViewModel
 
+
+/*
+* @author K2336620
+*
+* ViewModel for managing Activity entities.
+* This class extends BaseViewModel to inherit common CRUD operations
+* and specifies the entity type.
+* */
 class ActivityViewModel(application: Application) : BaseViewModel<Activity>(
     dao = DatabaseInstance.getDatabase(application).activityDao(),
     application = application

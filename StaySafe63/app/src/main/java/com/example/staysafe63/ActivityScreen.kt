@@ -23,6 +23,11 @@ import com.example.staysafe63.viewmodel.entitySpecificViewmodel.ContactViewModel
 import com.example.staysafe63.viewmodel.entitySpecificViewmodel.StatusViewModel
 import kotlinx.coroutines.launch
 
+
+/*
+* @author K2128078
+*
+* */
 @Composable
 fun ActivityScreen(
     navController: NavController,
@@ -227,7 +232,12 @@ fun ActivityScreen(
     }
 }
 
-// Dropdown menu composable
+
+/*
+* @author K2128078
+*
+* Dropdown menu composable
+* */
 @Composable
 fun DropdownMenuForStatuses(
     statusList: List<Status>,

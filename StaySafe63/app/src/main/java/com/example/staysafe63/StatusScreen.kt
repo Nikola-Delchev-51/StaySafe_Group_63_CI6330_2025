@@ -19,6 +19,11 @@ import com.example.staysafe63.viewmodel.entitySpecificViewmodel.ContactViewModel
 import com.example.staysafe63.viewmodel.entitySpecificViewmodel.StatusViewModel
 import kotlinx.coroutines.launch
 
+
+/*
+* @author K2128078
+*
+* */
 @Composable
 fun StatusScreen(
     navController: NavController,

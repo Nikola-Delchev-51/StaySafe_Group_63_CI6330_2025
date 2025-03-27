@@ -5,6 +5,11 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import androidx.navigation.navArgument
 
+
+/*
+* @author K2128078
+*
+* */
 @Composable
 fun NavigationComponent() {
     val navController = rememberNavController()

@@ -5,6 +5,14 @@ import com.example.staysafe63.model.DatabaseInstance
 import com.example.staysafe63.model.entities.User
 import com.example.staysafe63.viewmodel.BaseViewModel
 
+
+/*
+* @author K2336620
+*
+* ViewModel for managing User entities.
+* This class extends BaseViewModel to inherit common CRUD operations
+* and specifies the entity type.
+* */
 class UserViewModel(application: Application) : BaseViewModel<User>(
     dao = DatabaseInstance.getDatabase(application).userDao(),
     application = application

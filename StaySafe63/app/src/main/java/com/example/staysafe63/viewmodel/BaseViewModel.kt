@@ -7,6 +7,12 @@ import com.example.staysafe63.model.dataAccessObjects.BaseDAO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+
+/*
+* @author K2336620
+*
+* Base ViewModel class providing a blueprint for the common CRUD operations for entities.
+* */
 abstract class BaseViewModel<T>(
     private val dao: BaseDAO<T>,
     application: android.app.Application
