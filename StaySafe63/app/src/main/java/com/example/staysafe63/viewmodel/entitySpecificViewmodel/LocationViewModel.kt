@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-/*
+/**
 * @author K2336620
 *
 * ViewModel for managing Location entities.

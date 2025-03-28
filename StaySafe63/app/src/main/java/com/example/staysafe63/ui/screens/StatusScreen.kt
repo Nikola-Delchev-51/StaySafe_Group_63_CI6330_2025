@@ -68,7 +68,8 @@ fun StatusScreen(
                 value = statusName,
                 onValueChange = { statusName = it },
                 label = { Text("Status Name") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
             )
 
             Spacer(modifier = Modifier.height(16.dp))

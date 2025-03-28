@@ -67,7 +67,9 @@ fun UserLoginScreen(
                 if (filteredInput == input) {
                     username = input} },
             label = { Text("Username") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text)
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -82,6 +84,7 @@ fun UserLoginScreen(
                     password = input} },
             label = { Text("Password") },
             modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password)
         )

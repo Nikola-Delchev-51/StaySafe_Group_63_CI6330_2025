@@ -6,7 +6,7 @@ import com.example.staysafe63.model.entities.Contact
 import com.example.staysafe63.viewmodel.BaseViewModel
 
 
-/*
+/**
 * @author K2336620
 *
 * ViewModel for managing Contact entities.

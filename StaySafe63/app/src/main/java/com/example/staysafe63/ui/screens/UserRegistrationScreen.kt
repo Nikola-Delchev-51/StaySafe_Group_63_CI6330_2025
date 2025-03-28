@@ -56,6 +56,8 @@ fun UserRegistrationScreen(
             onValueChange = { firstName = it },
             label = { Text("First Name") },
             modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text)
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -65,7 +67,9 @@ fun UserRegistrationScreen(
             value = lastName,
             onValueChange = { lastName = it },
             label = { Text("Last Name") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text)
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -94,7 +98,8 @@ fun UserRegistrationScreen(
                 if (filteredInput == input) {
                     username = input} },
             label = { Text("Username") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text)
         )
 
         Spacer(modifier = Modifier.height(8.dp))

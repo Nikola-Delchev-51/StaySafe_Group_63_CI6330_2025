@@ -8,7 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-/*
+/**
 * @author K2336620
 *
 * Base ViewModel class providing a blueprint for the common CRUD operations for entities.

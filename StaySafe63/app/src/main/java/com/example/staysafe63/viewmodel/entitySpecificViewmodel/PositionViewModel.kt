@@ -6,7 +6,7 @@ import com.example.staysafe63.model.entities.Position
 import com.example.staysafe63.viewmodel.BaseViewModel
 
 
-/*
+/**
 * @author K2336620
 *
 * ViewModel for managing Position entities.

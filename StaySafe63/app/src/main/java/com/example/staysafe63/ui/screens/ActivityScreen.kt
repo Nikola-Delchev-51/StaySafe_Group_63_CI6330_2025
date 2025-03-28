@@ -24,6 +24,10 @@ import com.example.staysafe63.viewmodel.entitySpecificViewmodel.ActivityViewMode
 import com.example.staysafe63.viewmodel.entitySpecificViewmodel.ContactViewModel
 import com.example.staysafe63.viewmodel.entitySpecificViewmodel.StatusViewModel
 import kotlinx.coroutines.launch
+import android.location.Geocoder
+import android.content.Context
+import com.example.staysafe63.ui.AddressMapView
+import java.util.Locale
 
 
 /**
@@ -67,129 +71,201 @@ fun ActivityScreen(
             contactList = contactViewModel.loadAllItems()
         }
 
-        Column(modifier = Modifier.padding(16.dp)) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
 
             // Back navigation
-            TextButton(onClick = { navController.popBackStack() }) {
-                Text("⬅ Back", style = MaterialTheme.typography.bodyLarge)
-            }
-
-            // Input fields
-            OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text("Activity Name") }, modifier = Modifier.fillMaxWidth())
-            OutlinedTextField(value = description, onValueChange = { description = it }, label = { Text("Description") }, modifier = Modifier.fillMaxWidth())
-            OutlinedTextField(value = fromName, onValueChange = { fromName = it }, label = { Text("From Location") }, modifier = Modifier.fillMaxWidth())
-            OutlinedTextField(value = toName, onValueChange = { toName = it }, label = { Text("To Location") }, modifier = Modifier.fillMaxWidth())
-            OutlinedTextField(value = arriveTime, onValueChange = { arriveTime = it }, label = { Text("Arrival Time") }, modifier = Modifier.fillMaxWidth())
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Status dropdown
-            Text("Select Status:")
-            DropdownMenuForStatuses(statusList, selectedStatusId) { selectedStatusId = it }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Navigate to manage statuses
-            Button(onClick = { navController.navigate("status_screen") }) {
-                Text("Manage Statuses")
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Add or Update Activity button
-            Button(
-                onClick = {
-                    val selectedStatus = statusList.find { it.StatusID == selectedStatusId }
-
-                    if (editingActivity == null) {
-                        // Create new activity
-                        activityViewModel.createActivity(
-                            name = name,
-                            userId = userId,
-                            username = username,
-                            description = description,
-                            fromId = 0,
-                            fromName = fromName,
-                            leave = leaveTime,
-                            toId = 0,
-                            toName = toName,
-                            arrive = arriveTime,
-                            statusId = selectedStatusId ?: 0,
-                            statusName = selectedStatus?.StatusName ?: "Unknown"
-                        )
-                    } else {
-                        // Update existing activity
-                        val updated = editingActivity!!.copy(
-                            ActivityName = name,
-                            ActivityDescription = description,
-                            ActivityFromID = 0,
-                            ActivityFromName = fromName,
-                            ActivityLeave = leaveTime,
-                            ActivityToID = 0,
-                            ActivityToName = toName,
-                            ActivityArrive = arriveTime,
-                            ActivityStatusID = selectedStatusId ?: 0,
-                            ActivityStatusName = selectedStatus?.StatusName ?: "Unknown"
-                        )
-
-                        activityViewModel.updateActivity(editingActivity!!, updated)
-
-                        // Notify contacts
-                        val userContacts = contactList.filter { it.ContactUserID == userId }
-
-                        if (userContacts.isEmpty()) {
-                            Toast.makeText(context, "No emergency contacts to notify.", Toast.LENGTH_SHORT).show()
-                        } else {
-                            userContacts.forEach { contact ->
-                                Toast.makeText(
-                                    context,
-                                    "Notified ${contact.ContactLabel}: $username updated activity status to '${selectedStatus?.StatusName}'",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
-                        }
-                    }
-
-                    scope.launch {
-                        activityList = activityViewModel.loadAllItems()
-                    }
-
-                    // Reset form
-                    name = ""
-                    description = ""
-                    fromName = ""
-                    toName = ""
-                    arriveTime = ""
-                    selectedStatusId = null
-                    editingActivity = null
-                },
-                enabled = name.isNotBlank() && selectedStatusId != null
-            ) {
-                Text(if (editingActivity == null) "Add Activity" else "Update Activity")
-            }
-
-            // Cancel edit button
-            if (editingActivity != null) {
-                TextButton(onClick = {
-                    editingActivity = null
-                    name = ""
-                    description = ""
-                    fromName = ""
-                    toName = ""
-                    arriveTime = ""
-                    selectedStatusId = null
-                }) {
-                    Text("Cancel")
+            item {
+                TextButton(onClick = { navController.popBackStack() }) {
+                    Text("⬅ Back", style = MaterialTheme.typography.bodyLarge)
                 }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            // Input fields
+            item {
+                OutlinedTextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text("Activity Name") },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+            }
 
-            // List of activities
-            Text("Planned Activities", style = MaterialTheme.typography.titleMedium)
+            item {
+                OutlinedTextField(
+                    value = description,
+                    onValueChange = { description = it },
+                    label = { Text("Description") },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+            }
 
-            LazyColumn {
-                items(activityList.filter { it.ActivityUserID == userId }) { activity ->
+            item {
+                OutlinedTextField(
+                    value = fromName,
+                    onValueChange = { fromName = it },
+                    label = { Text("From Location") },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+            }
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+                AddressMapView(address = fromName)
+            }
+
+            item {
+                OutlinedTextField(
+                    value = toName,
+                    onValueChange = { toName = it },
+                    label = { Text("To Location") },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+            }
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+                AddressMapView(address = toName)
+            }
+
+            item {
+                OutlinedTextField(
+                    value = arriveTime,
+                    onValueChange = { arriveTime = it },
+                    label = { Text("Arrival Time") },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Status dropdown
+                Text("Select Status:")
+                DropdownMenuForStatuses(statusList, selectedStatusId) { selectedStatusId = it }
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Navigate to manage statuses
+                Button(onClick = { navController.navigate("status_screen") }) {
+                    Text("Manage Statuses")
+                }
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Add or Update Activity button
+                Button(
+                    onClick = {
+                        val selectedStatus = statusList.find { it.StatusID == selectedStatusId }
+
+                        if (editingActivity == null) {
+                            // Create new activity
+                            activityViewModel.createActivity(
+                                name = name,
+                                userId = userId,
+                                username = username,
+                                description = description,
+                                fromId = 0,
+                                fromName = fromName,
+                                leave = leaveTime,
+                                toId = 0,
+                                toName = toName,
+                                arrive = arriveTime,
+                                statusId = selectedStatusId ?: 0,
+                                statusName = selectedStatus?.StatusName ?: "Unknown"
+                            )
+                        } else {
+                            // Update existing activity
+                            val updated = editingActivity!!.copy(
+                                ActivityName = name,
+                                ActivityDescription = description,
+                                ActivityFromID = 0,
+                                ActivityFromName = fromName,
+                                ActivityLeave = leaveTime,
+                                ActivityToID = 0,
+                                ActivityToName = toName,
+                                ActivityArrive = arriveTime,
+                                ActivityStatusID = selectedStatusId ?: 0,
+                                ActivityStatusName = selectedStatus?.StatusName ?: "Unknown"
+                            )
+
+                            activityViewModel.updateActivity(editingActivity!!, updated)
+
+                            // Notify contacts
+                            val userContacts = contactList.filter { it.ContactUserID == userId }
+
+                            if (userContacts.isEmpty()) {
+                                Toast.makeText(
+                                    context,
+                                    "No emergency contacts to notify.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                userContacts.forEach { contact ->
+                                    Toast.makeText(
+                                        context,
+                                        "Notified ${contact.ContactLabel}: $username updated activity status to '${selectedStatus?.StatusName}'",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                            }
+                        }
+
+                        scope.launch {
+                            activityList = activityViewModel.loadAllItems()
+                        }
+
+                        // Reset form
+                        name = ""
+                        description = ""
+                        fromName = ""
+                        toName = ""
+                        arriveTime = ""
+                        selectedStatusId = null
+                        editingActivity = null
+                    },
+                    enabled = name.isNotBlank() && selectedStatusId != null
+                ) {
+                    Text(if (editingActivity == null) "Add Activity" else "Update Activity")
+                }
+            }
+
+            item {
+                // Cancel edit button
+                if (editingActivity != null) {
+                    TextButton(onClick = {
+                        editingActivity = null
+                        name = ""
+                        description = ""
+                        fromName = ""
+                        toName = ""
+                        arriveTime = ""
+                        selectedStatusId = null
+                    }) {
+                        Text("Cancel")
+                    }
+                }
+            }
+
+
+            item {
+                Spacer(modifier = Modifier.height(24.dp))
+
+                // List of activities
+                Text("Planned Activities", style = MaterialTheme.typography.titleMedium)
+            }
+
+            items(activityList.filter { it.ActivityUserID == userId }) { activity ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -201,6 +277,8 @@ fun ActivityScreen(
                             Text("Description: ${activity.ActivityDescription}")
                             Text("Arrival Time: ${activity.ActivityArrive}")
                             Text("Status: ${activity.ActivityStatusName}")
+                                Spacer(modifier = Modifier.height(16.dp))
+                                AddressMapView(address = activity.ActivityToName)
                         }
 
                         Row {
@@ -232,7 +310,7 @@ fun ActivityScreen(
             }
         }
     }
-}
+
 
 
 /*

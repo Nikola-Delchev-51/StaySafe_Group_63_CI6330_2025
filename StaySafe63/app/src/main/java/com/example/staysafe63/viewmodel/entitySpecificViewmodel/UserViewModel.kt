@@ -6,7 +6,7 @@ import com.example.staysafe63.model.entities.User
 import com.example.staysafe63.viewmodel.BaseViewModel
 
 
-/*
+/**
 * @author K2336620
 *
 * ViewModel for managing User entities.

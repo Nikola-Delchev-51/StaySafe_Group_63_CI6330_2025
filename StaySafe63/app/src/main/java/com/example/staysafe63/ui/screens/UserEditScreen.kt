@@ -66,7 +66,9 @@ fun UserEditScreen(
                 value = firstName,
                 onValueChange = { firstName = it },
                 label = { Text("First Name") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text)
             )
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -74,7 +76,9 @@ fun UserEditScreen(
                 value = lastName,
                 onValueChange = { lastName = it },
                 label = { Text("Last Name") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text)
             )
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -83,6 +87,7 @@ fun UserEditScreen(
                 onValueChange = { phone = it },
                 label = { Text("Phone") },
                 modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Phone)
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -91,7 +96,9 @@ fun UserEditScreen(
                 value = username,
                 onValueChange = { username = it },
                 label = { Text("Username") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text)
             )
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -100,6 +107,7 @@ fun UserEditScreen(
                 onValueChange = { password = it },
                 label = { Text("Password") },
                 modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password)
             )
@@ -125,6 +133,7 @@ fun UserEditScreen(
             }) {
                 Text("Save Changes")
             }
+
         }
     }
 }
