@@ -40,7 +40,7 @@ import coil.compose.AsyncImage
 
 /**
 * @author K2128078
-*
+* @author K2336620
 * */
 @Composable
 fun ActivityScreen(
@@ -382,7 +382,7 @@ fun ActivityScreen(
 
 
 
-/*
+/**
 * @author K2128078
 *
 * Dropdown menu composable

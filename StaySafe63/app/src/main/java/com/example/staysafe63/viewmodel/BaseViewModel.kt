@@ -18,7 +18,7 @@ abstract class BaseViewModel<T>(
     application: android.app.Application
 ) : AndroidViewModel(application) {
 
-    val itemList = mutableStateListOf<T>()
+    private val itemList = mutableStateListOf<T>()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {

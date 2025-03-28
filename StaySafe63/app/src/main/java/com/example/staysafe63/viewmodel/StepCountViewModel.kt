@@ -9,6 +9,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
+
+/**
+ * @author K2336620
+ *
+ * */
 class StepCountViewModel(application: Application) : AndroidViewModel(application), SensorEventListener {
 
     private val sensorManager = application.getSystemService(SensorManager::class.java)

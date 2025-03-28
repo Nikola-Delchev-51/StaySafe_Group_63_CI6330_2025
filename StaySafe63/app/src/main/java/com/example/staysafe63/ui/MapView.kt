@@ -13,10 +13,15 @@ import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.CameraPosition
 import java.util.Locale
 
+
+/**
+ * @author K2336620
+ *
+ * */
 fun getCoordinatesFromAddress(context: Context, address: String): Pair<Double, Double> {
     val geocoder = Geocoder(context, Locale.getDefault())
     if (address.isNullOrBlank()) {
-        return Pair(0.0, 0.0);
+        return Pair(0.0, 0.0)
     }
     val addresses = geocoder.getFromLocationName(address, 1)
     if (addresses != null) {

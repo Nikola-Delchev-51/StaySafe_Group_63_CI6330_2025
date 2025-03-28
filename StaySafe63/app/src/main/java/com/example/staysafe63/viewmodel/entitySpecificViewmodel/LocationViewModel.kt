@@ -21,7 +21,7 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
 
     private val db = DatabaseInstance.getDatabase(application)
     private val locationDAO = db.locationDao()
-    var locationList = mutableListOf<Location>()
+    private var locationList = mutableListOf<Location>()
 
 
     init {

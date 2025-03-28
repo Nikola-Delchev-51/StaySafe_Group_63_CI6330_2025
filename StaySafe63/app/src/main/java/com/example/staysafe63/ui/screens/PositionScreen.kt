@@ -1,1 +1,0 @@
-package com.example.staysafe63.ui.screens

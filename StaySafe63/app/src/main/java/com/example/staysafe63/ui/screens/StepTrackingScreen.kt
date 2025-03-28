@@ -12,6 +12,11 @@ import androidx.compose.ui.unit.dp
 import com.example.staysafe63.viewmodel.StepCountViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 
+
+/**
+ * @author K2336620
+ *
+ * */
 @Composable
 fun StepTrackingScreen(viewModel: StepCountViewModel = viewModel()) {
     val stepCount by viewModel.stepCount.observeAsState(0)

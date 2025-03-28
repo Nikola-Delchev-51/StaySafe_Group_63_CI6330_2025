@@ -39,5 +39,4 @@ data class Activity(
 
     val ActivityStatusName: String
 
-) {
-}
+)
