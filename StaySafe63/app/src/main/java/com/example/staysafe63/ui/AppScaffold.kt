@@ -36,6 +36,7 @@ fun AppScaffold(
                 DrawerItem("Contacts", "contact_screen", navController, drawerState, scope)
                 DrawerItem("Statuses", "status_screen", navController, drawerState, scope)
                 DrawerItem("Profile", "user_screen", navController, drawerState, scope)
+                DrawerItem("Step Tracking", "step_tracking_screen", navController, drawerState, scope)
             }
         }
     ) {

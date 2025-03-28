@@ -7,6 +7,7 @@ import androidx.navigation.navArgument
 import com.example.staysafe63.ui.screens.ActivityScreen
 import com.example.staysafe63.ui.screens.ContactScreen
 import com.example.staysafe63.ui.screens.StatusScreen
+import com.example.staysafe63.ui.screens.StepTrackingScreen
 import com.example.staysafe63.ui.screens.UserEditScreen
 import com.example.staysafe63.ui.screens.UserLoginScreen
 import com.example.staysafe63.ui.screens.UserRegistrationScreen
@@ -35,6 +36,12 @@ fun NavigationComponent() {
         // APP SCREENS with drawer & Top bar
         composable("user_screen") {
             UserScreen(navController = navController)
+        }
+
+        composable("step_tracking_screen") {
+            AppScaffold(screenTitle = "Step Tracking", navController = navController) {
+                StepTrackingScreen()
+            }
         }
 
         composable(

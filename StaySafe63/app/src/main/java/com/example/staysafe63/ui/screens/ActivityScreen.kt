@@ -86,7 +86,7 @@ fun ActivityScreen(
         val captureLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { success ->
             if (success && imageUri != null && editingActivity != null) {
                 imageViewModel.createActivityImage(editingActivity!!.ActivityID, imageUri.toString())
-                Toast.makeText(context, "📸 Image saved for this trip", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Image saved for this activity", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -108,7 +108,7 @@ fun ActivityScreen(
             // Back navigation
             item {
                 TextButton(onClick = { navController.popBackStack() }) {
-                    Text("⬅ Back", style = MaterialTheme.typography.bodyLarge)
+                    Text("<- Back", style = MaterialTheme.typography.bodyLarge)
                 }
             }
 

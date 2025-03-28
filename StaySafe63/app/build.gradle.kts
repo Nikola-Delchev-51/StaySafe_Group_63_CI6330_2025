@@ -77,6 +77,7 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     implementation(libs.play.services.maps)
+    implementation(libs.androidx.runtime.livedata)
     ksp(libs.androidx.room.ksp)
     //-----
 
