@@ -1,5 +1,8 @@
 package com.example.staysafe63.ui.screens
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,10 +27,15 @@ import com.example.staysafe63.viewmodel.entitySpecificViewmodel.ActivityViewMode
 import com.example.staysafe63.viewmodel.entitySpecificViewmodel.ContactViewModel
 import com.example.staysafe63.viewmodel.entitySpecificViewmodel.StatusViewModel
 import kotlinx.coroutines.launch
-import android.location.Geocoder
-import android.content.Context
 import com.example.staysafe63.ui.AddressMapView
-import java.util.Locale
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import com.example.staysafe63.model.entities.ActivityImage
+import com.example.staysafe63.viewmodel.entitySpecificViewmodel.ActivityImageViewModel
+import java.io.File
+import coil.compose.AsyncImage
 
 
 /**
@@ -39,7 +47,8 @@ fun ActivityScreen(
     navController: NavController,
     activityViewModel: ActivityViewModel = viewModel(),
     statusViewModel: StatusViewModel = viewModel(),
-    contactViewModel: ContactViewModel = viewModel()
+    contactViewModel: ContactViewModel = viewModel(),
+    imageViewModel: ActivityImageViewModel = viewModel()
 ) {
     AppScaffold(screenTitle = "Plan Activity", navController = navController) {
 
@@ -61,6 +70,25 @@ fun ActivityScreen(
         var contactList by remember { mutableStateOf(listOf<Contact>()) }
         var selectedStatusId by remember { mutableStateOf<Int?>(null) }
         var editingActivity by remember { mutableStateOf<Activity?>(null) }
+
+        //Image capturing
+        val cameraPermissionLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestPermission(),
+            onResult = { isGranted ->
+                if (isGranted) {
+                    Toast.makeText(context, "Camera permission granted.", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "Camera permission denied.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        )
+        var imageUri by remember { mutableStateOf<Uri?>(null) }
+        val captureLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success && imageUri != null && editingActivity != null) {
+                imageViewModel.createActivityImage(editingActivity!!.ActivityID, imageUri.toString())
+                Toast.makeText(context, "📸 Image saved for this trip", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         val scope = rememberCoroutineScope()
 
@@ -240,6 +268,32 @@ fun ActivityScreen(
                 }
             }
 
+            //Photo Capture
+            item {
+                    Button(onClick = {
+                        when (PackageManager.PERMISSION_GRANTED) {
+                            ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) -> {
+                                val imageFile = File(
+                                    context.getExternalFilesDir("Pictures"),
+                                    "trip_${System.currentTimeMillis()}.jpg"
+                                )
+                                val uri = FileProvider.getUriForFile(
+                                    context,
+                                    "${context.packageName}.fileprovider",
+                                    imageFile
+                                )
+                                imageUri = uri
+                                captureLauncher.launch(uri)
+                            }
+                            else -> {
+                                cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+                            }
+                        }
+                    }) {
+                        Text("Capture Image")
+                    }
+            }
+
             item {
                 // Cancel edit button
                 if (editingActivity != null) {
@@ -303,6 +357,21 @@ fun ActivityScreen(
                                 }
                             }) {
                                 Icon(Icons.Default.Delete, contentDescription = "Delete Activity")
+                            }
+                        }
+
+                        val images by produceState(initialValue = listOf<ActivityImage>(), key1 = activity.ActivityID) {
+                            value = imageViewModel.getImagesForActivity(activity.ActivityID)
+                        }
+
+                        if (images.isNotEmpty()) {
+                            Text("Trip Photos:")
+                            images.forEach { img ->
+                                AsyncImage(
+                                    model = img.ImagePath,
+                                    contentDescription = "Trip Image",
+                                    modifier = Modifier.fillMaxWidth().height(200.dp).padding(vertical = 4.dp)
+                                )
                             }
                         }
                     }

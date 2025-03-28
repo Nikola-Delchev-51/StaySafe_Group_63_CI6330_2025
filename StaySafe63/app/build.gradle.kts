@@ -72,6 +72,8 @@ dependencies {
     implementation("com.google.android.gms:play-services-maps:19.1.0")
     implementation("com.google.maps.android:maps-compose:2.11.4")
 
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     implementation(libs.play.services.maps)

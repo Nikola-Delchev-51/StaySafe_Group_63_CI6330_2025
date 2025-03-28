@@ -16,8 +16,9 @@ import com.example.staysafe63.model.entities.*
     Activity::class,
     Location::class,
     Status::class,
-    Position::class
-    ], version = 2)
+    Position::class,
+    ActivityImage::class
+    ], version = 3)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDAO
@@ -31,5 +32,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun statusDao(): StatusDAO
 
     abstract fun positionDao(): PositionDAO
+
+    abstract fun activityImageDao(): ActivityImageDAO
 
 }

@@ -24,6 +24,7 @@ object DatabaseInstance {
                 AppDatabase::class.java,
                 "staysafe63-database"
             )
+                .fallbackToDestructiveMigration()
                 .build()
         }
         Log.d("DatabaseInstance", "Creating new database instance")
