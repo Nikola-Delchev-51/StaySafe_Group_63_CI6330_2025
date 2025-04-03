@@ -84,10 +84,12 @@ fun ActivityScreen(
         )
         var imageUri by remember { mutableStateOf<Uri?>(null) }
         val imageState = remember { mutableStateOf<Uri?>(null) }
+        val refreshTrigger = remember { mutableStateOf(0) }
 
         val captureLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { success ->
             if (success && imageState.value != null && editingActivity != null) {
                 imageViewModel.createActivityImage(editingActivity!!.ActivityID, imageState.value.toString())
+                refreshTrigger.value++
                 Toast.makeText(context, "Image saved for this activity", Toast.LENGTH_SHORT).show()
             }
         }
@@ -380,7 +382,9 @@ fun ActivityScreen(
                         }
 
                         }
-                        val images by produceState(initialValue = listOf<ActivityImage>(), key1 = activity.ActivityID) {
+
+
+                        val images by produceState(initialValue = listOf<ActivityImage>(), key1 = activity.ActivityID, key2 = refreshTrigger.value) {
                             value = imageViewModel.getImagesForActivity(activity.ActivityID)
                         }
 
