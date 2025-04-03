@@ -83,9 +83,11 @@ fun ActivityScreen(
             }
         )
         var imageUri by remember { mutableStateOf<Uri?>(null) }
+        val imageState = remember { mutableStateOf<Uri?>(null) }
+
         val captureLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-            if (success && imageUri != null && editingActivity != null) {
-                imageViewModel.createActivityImage(editingActivity!!.ActivityID, imageUri.toString())
+            if (success && imageState.value != null && editingActivity != null) {
+                imageViewModel.createActivityImage(editingActivity!!.ActivityID, imageState.value.toString())
                 Toast.makeText(context, "Image saved for this activity", Toast.LENGTH_SHORT).show()
             }
         }
@@ -270,28 +272,43 @@ fun ActivityScreen(
 
             //Photo Capture
             item {
-                    Button(onClick = {
-                        when (PackageManager.PERMISSION_GRANTED) {
-                            ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) -> {
-                                val imageFile = File(
-                                    context.getExternalFilesDir("Pictures"),
-                                    "trip_${System.currentTimeMillis()}.jpg"
-                                )
-                                val uri = FileProvider.getUriForFile(
-                                    context,
-                                    "${context.packageName}.fileprovider",
-                                    imageFile
-                                )
-                                imageUri = uri
-                                captureLauncher.launch(uri)
-                            }
-                            else -> {
-                                cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
-                            }
+                Button(onClick = {
+                    when (PackageManager.PERMISSION_GRANTED) {
+                        ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) -> {
+                            val imageFile = File(
+                                context.getExternalFilesDir("Pictures"),
+                                "trip_${System.currentTimeMillis()}.jpg"
+                            )
+                            val uri = FileProvider.getUriForFile(
+                                context,
+                                "${context.packageName}.fileprovider",
+                                imageFile
+                            )
+                            imageState.value = uri
+                            captureLauncher.launch(uri)
                         }
-                    }) {
-                        Text("Capture Image")
+                        else -> {
+                            cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+                        }
                     }
+                }) {
+                    Text("Capture Image")
+                }
+            }
+
+            item {
+                imageState.value?.let { uri ->
+                    Text("Captured Image:")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    AsyncImage(
+                        model = uri,
+                        contentDescription = "Captured Image",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                            .padding(bottom = 8.dp)
+                    )
+                }
             }
 
             item {
@@ -333,7 +350,7 @@ fun ActivityScreen(
                             Text("Status: ${activity.ActivityStatusName}")
                                 Spacer(modifier = Modifier.height(16.dp))
                                 AddressMapView(address = activity.ActivityToName)
-                        }
+
 
                         Row {
                             // Edit button
@@ -358,8 +375,11 @@ fun ActivityScreen(
                             }) {
                                 Icon(Icons.Default.Delete, contentDescription = "Delete Activity")
                             }
+
+
                         }
 
+                        }
                         val images by produceState(initialValue = listOf<ActivityImage>(), key1 = activity.ActivityID) {
                             value = imageViewModel.getImagesForActivity(activity.ActivityID)
                         }
